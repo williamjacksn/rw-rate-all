@@ -1,31 +1,46 @@
+import argparse
 import json
-import os
 import urllib.parse
 import urllib.request
+import uuid
 
 
-def rate(song_id):
-    params = {'user_id': 3, 'key': os.environ['RW_KEY'], 'rating': 3,
-              'song_id': song_id, 'sid': 2}
+def rate(user_id, key, song_id):
+    url = 'http://rainwave.cc/api4/rate'
+    params = {'user_id': user_id, 'key': key, 'rating': 3, 'song_id': song_id,
+              'sid': 2}
     data = urllib.parse.urlencode(params).encode()
-    return urllib.request.urlopen('http://rainwave.cc/api4/rate', data)
+    headers = {'user-agent': str(uuid.uuid4())}
+    req = urllib.request.Request(url, data, headers)
+    return urllib.request.urlopen(req)
 
 
-def unrated_songs():
-    params = {'user_id': 3, 'key': 'HzAFqoNe1u', 'sid': 2}
+def unrated_songs(user_id, key):
+    url = 'http://rainwave.cc/api4/unrated_songs'
+    params = {'user_id': user_id, 'key': key, 'sid': 2}
     data = urllib.parse.urlencode(params).encode()
-    response = urllib.request.urlopen('http://rainwave.cc/api4/unrated_songs',
-                                      data)
+    headers = {'user-agent': str(uuid.uuid4())}
+    req = urllib.request.Request(url, data, headers)
+    response = urllib.request.urlopen(req)
     body = response.read().decode()
     j = json.loads(body)
     for song in j['unrated_songs']:
         yield song
 
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('user_id')
+    parser.add_argument('key')
+    return parser.parse_args()
+
+
 def main():
-    for song in unrated_songs():
-        print('rating {}'.format(song['title']))
-        rate(song['id'])
+    args = parse_args()
+    for song in unrated_songs(args.user_id, args.key):
+        print('Attempting to rate {} // {}'.format(song['album_name'],
+                                                   song['title']))
+        rate(args.user_id, args.key, song['id'])
 
 if __name__ == '__main__':
     main()
