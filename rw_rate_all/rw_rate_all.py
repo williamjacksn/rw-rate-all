@@ -40,7 +40,7 @@ def main():
     for song in unrated_songs(args.user_id, args.key):
         try:
             print('Attempting to rate {} // {}'.format(song['album_name'], song['title']))
-        except UnicodeDecodeError:
+        except UnicodeEncodeError:
             print('Attempting to rate song {}'.format(song['id']))
         rate(args.user_id, args.key, song['id'])
 
