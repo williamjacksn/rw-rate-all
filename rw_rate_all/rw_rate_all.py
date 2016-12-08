@@ -30,6 +30,7 @@ def unrated_songs(user_id, key):
 
 def parse_args():
     parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--interactive', action='store_true')
     parser.add_argument('user_id')
     parser.add_argument('key')
     return parser.parse_args()
@@ -43,6 +44,8 @@ def main():
         except UnicodeEncodeError:
             print('Attempting to rate song {}'.format(song['id']))
         rate(args.user_id, args.key, song['id'])
+    if args.interactive:
+        input('Press <Enter> ...')
 
 if __name__ == '__main__':
     main()
