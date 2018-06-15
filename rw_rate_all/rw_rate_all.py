@@ -7,8 +7,7 @@ import uuid
 
 def rate(user_id, key, song_id):
     url = 'http://rainwave.cc/api4/rate'
-    params = {'user_id': user_id, 'key': key, 'rating': 3, 'song_id': song_id,
-              'sid': 2}
+    params = {'key': key, 'rating': 3, 'sid': 2, 'song_id': song_id, 'user_id': user_id}
     data = urllib.parse.urlencode(params).encode()
     headers = {'user-agent': str(uuid.uuid4())}
     req = urllib.request.Request(url, data, headers)
@@ -17,7 +16,7 @@ def rate(user_id, key, song_id):
 
 def unrated_songs(user_id, key):
     url = 'http://rainwave.cc/api4/unrated_songs'
-    params = {'user_id': user_id, 'key': key, 'sid': 2}
+    params = {'key': key, 'sid': 2, 'user_id': user_id}
     data = urllib.parse.urlencode(params).encode()
     headers = {'user-agent': str(uuid.uuid4())}
     req = urllib.request.Request(url, data, headers)
@@ -40,12 +39,13 @@ def main():
     args = parse_args()
     for song in unrated_songs(args.user_id, args.key):
         try:
-            print('Attempting to rate {} // {}'.format(song['album_name'], song['title']))
+            print(f'Attempting to rate {song["album_name"]} // {song["title"]}')
         except UnicodeEncodeError:
-            print('Attempting to rate song {}'.format(song['id']))
+            print(f'Attempting to rate song {song["id"]}')
         rate(args.user_id, args.key, song['id'])
     if args.interactive:
         input('Press <Enter> ...')
+
 
 if __name__ == '__main__':
     main()
