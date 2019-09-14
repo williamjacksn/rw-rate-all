@@ -1,0 +1,6 @@
+version: '3'
+
+services:
+  rw-rate-all:
+    image: williamjackson/rw-rate-all
+    build: .
