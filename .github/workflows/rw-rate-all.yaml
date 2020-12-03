@@ -10,7 +10,5 @@ jobs:
     name: Rate all songs on Rainwave
     runs-on: ubuntu-latest
     steps:
-      - name: Log in to the GitHub registry
-        run: docker login --password ${{ github.token }} --username ${{ github.actor }} docker.pkg.github.com
       - name: Run the container
-        run: docker container run docker.pkg.github.com/williamjacksn/rw-rate-all/rw-rate-all:2020.2 3 ${{ secrets.rainwave_key }}
+        run: docker container run ghcr.io/williamjacksn/rw-rate-all:2020.2 3 ${{ secrets.rainwave_key }}

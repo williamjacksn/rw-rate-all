@@ -1,6 +1,5 @@
-version: '3.7'
+version: '3.8'
 
 services:
   rw-rate-all:
-    image: docker.pkg.github.com/williamjacksn/rw-rate-all/rw-rate-all
-    build: .
+    image: ghcr.io/williamjacksn/rw-rate-all
