@@ -23,7 +23,7 @@ def unrated_songs(user_id, key):
     response = urllib.request.urlopen(req)
     body = response.read().decode()
     j = json.loads(body)
-    for song in j['unrated_songs']:
+    for song in j.get('unrated_songs'):
         yield song
 
 
@@ -38,11 +38,14 @@ def parse_args():
 def main():
     args = parse_args()
     for song in unrated_songs(args.user_id, args.key):
+        album = song.get('album_name')
+        title = song.get('title')
+        song_id = song.get('id')
         try:
-            print(f'Attempting to rate {song["album_name"]} // {song["title"]}')
+            print(f'Attempting to rate {album} // {title}')
         except UnicodeEncodeError:
-            print(f'Attempting to rate song {song["id"]}')
-        rate(args.user_id, args.key, song['id'])
+            print(f'Attempting to rate song {song_id}')
+        rate(args.user_id, args.key, song_id)
     if args.interactive:
         input('Press <Enter> ...')
 
