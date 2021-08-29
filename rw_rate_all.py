@@ -6,7 +6,7 @@ import uuid
 
 
 def rate(user_id, key, song_id):
-    url = 'http://rainwave.cc/api4/rate'
+    url = 'https://rainwave.cc/api4/rate'
     params = {'key': key, 'rating': 3, 'sid': 2, 'song_id': song_id, 'user_id': user_id}
     data = urllib.parse.urlencode(params).encode()
     headers = {'user-agent': str(uuid.uuid4())}
@@ -15,7 +15,7 @@ def rate(user_id, key, song_id):
 
 
 def unrated_songs(user_id, key):
-    url = 'http://rainwave.cc/api4/unrated_songs'
+    url = 'https://rainwave.cc/api4/unrated_songs'
     params = {'key': key, 'sid': 2, 'user_id': user_id}
     data = urllib.parse.urlencode(params).encode()
     headers = {'user-agent': str(uuid.uuid4())}
