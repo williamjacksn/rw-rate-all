@@ -1,4 +1,4 @@
-FROM python:3.12.1-alpine3.18
+FROM python:3.12.2-alpine3.18
 
 COPY rw_rate_all.py /rw_rate_all.py
 
