@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 COPY rw_rate_all.py /rw_rate_all.py
 
