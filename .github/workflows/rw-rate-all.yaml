@@ -10,9 +10,12 @@ jobs:
     name: Rate all songs on Rainwave
     runs-on: ubuntu-latest
     steps:
+
       - name: Check out the repository
         uses: actions/checkout@v4
-      - name: Instal uv
+
+      - name: Install uv
         run: sh ci/install-uv.sh
+
       - name: Rate all songs
         run: uv run rw-rate-all.py 3 ${{ secrets.rainwave_key }} >> $GITHUB_STEP_SUMMARY
