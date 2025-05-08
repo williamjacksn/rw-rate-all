@@ -10,5 +10,9 @@ jobs:
     name: Rate all songs on Rainwave
     runs-on: ubuntu-latest
     steps:
-      - name: Run the container
-        run: docker container run ghcr.io/williamjacksn/rw-rate-all:2021.1 3 ${{ secrets.rainwave_key }} >> $GITHUB_STEP_SUMMARY
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Instal uv
+        run: sh ci/install-uv.sh
+      - name: Rate all songs
+        run: uv run rw_rate_all.py 3 ${{ secrets.rainwave_key }} >> $GITHUB_STEP_SUMMARY

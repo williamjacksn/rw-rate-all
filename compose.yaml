@@ -1,3 +1,0 @@
-services:
-  rw-rate-all:
-    image: ghcr.io/williamjacksn/rw-rate-all
