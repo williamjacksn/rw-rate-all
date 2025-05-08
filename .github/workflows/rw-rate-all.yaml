@@ -15,4 +15,4 @@ jobs:
       - name: Instal uv
         run: sh ci/install-uv.sh
       - name: Rate all songs
-        run: uv run rw_rate_all.py 3 ${{ secrets.rainwave_key }} >> $GITHUB_STEP_SUMMARY
+        run: uv run rw-rate-all.py 3 ${{ secrets.rainwave_key }} >> $GITHUB_STEP_SUMMARY
