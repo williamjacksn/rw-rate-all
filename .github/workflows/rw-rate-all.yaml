@@ -1,34 +1,18 @@
-{
-  "env": {
-    "description": "This workflow (.github/workflows/rw-rate-all.yaml) was generated from ci/gen.py"
-  },
-  "jobs": {
-    "rate-all": {
-      "name": "Rate all songs on Rainwave",
-      "runs-on": "ubuntu-latest",
-      "steps": [
-        {
-          "name": "Check out repository",
-          "uses": "actions/checkout@v5"
-        },
-        {
-          "name": "Install uv",
-          "run": "sh ci/install-uv.sh"
-        },
-        {
-          "name": "Rate all songs",
-          "run": "uv run rw-rate-all.py 3 ${{ secrets.rainwave_key }} >> $GITHUB_STEP_SUMMARY"
-        }
-      ]
-    }
-  },
-  "name": "Rate all songs on Rainwave",
-  "on": {
-    "schedule": [
-      {
-        "cron": "0 0 * * *"
-      }
-    ],
-    "workflow_dispatch": {}
-  }
-}
+name: Rate all songs on Rainwave
+
+on:
+  schedule:
+    - cron: 0 0 * * *
+  workflow_dispatch: {}
+
+jobs:
+  rate-all:
+    name: Rate all songs on Rainwave
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+      - name: Install uv
+        run: sh ci/install-uv.sh
+      - name: Rate all songs
+        run: uv run rw-rate-all.py 3 ${{ secrets.rainwave_key }} >> $GITHUB_STEP_SUMMARY
