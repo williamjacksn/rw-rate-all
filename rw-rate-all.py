@@ -1,41 +1,48 @@
 import argparse
+import http.client
 import json
+import typing
 import urllib.parse
 import urllib.request
 import uuid
 
 
-def rate(user_id, key, song_id):
+class Args:
+    interactive: bool
+    user_id: str
+    key: str
+
+
+def rate(user_id: str, key: str, song_id: int) -> http.client.HTTPResponse:
     url = "https://rainwave.cc/api4/rate"
     params = {"key": key, "rating": 3, "sid": 2, "song_id": song_id, "user_id": user_id}
     data = urllib.parse.urlencode(params).encode()
     headers = {"user-agent": str(uuid.uuid4())}
     req = urllib.request.Request(url, data, headers)
-    return urllib.request.urlopen(req)
+    return urllib.request.urlopen(req)  # noqa: S310
 
 
-def unrated_songs(user_id, key):
+def unrated_songs(user_id: str, key: str) -> typing.Iterator:
     url = "https://rainwave.cc/api4/unrated_songs"
     params = {"key": key, "sid": 2, "user_id": user_id}
     data = urllib.parse.urlencode(params).encode()
     headers = {"user-agent": str(uuid.uuid4())}
     req = urllib.request.Request(url, data, headers)
-    response = urllib.request.urlopen(req)
+    response = urllib.request.urlopen(req)  # noqa: S310
     body = response.read().decode()
     j = json.loads(body)
-    for song in j.get("unrated_songs"):
-        yield song
+    yield from j.get("unrated_songs")
 
 
-def parse_args():
+def parse_args() -> Args:
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--interactive", action="store_true")
     parser.add_argument("user_id")
     parser.add_argument("key")
-    return parser.parse_args()
+    return parser.parse_args(namespace=Args())
 
 
-def main():
+def main() -> None:
     args = parse_args()
     for song in unrated_songs(args.user_id, args.key):
         album = song.get("album_name")
